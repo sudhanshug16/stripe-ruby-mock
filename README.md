@@ -1,3 +1,8 @@
+# ⚠️ Personal Fork Notice ⚠️
+
+This is a personal fork of the original `stripe-ruby-mock` gem. Use it at your own risk! The original repository can be found [here](https://github.com/stripe-ruby-mock/stripe-ruby-mock).
+
+
 # stripe-ruby-mock [![Tests](https://github.com/stripe-ruby-mock/stripe-ruby-mock/actions/workflows/rspec_tests.yml/badge.svg)](https://github.com/stripe-ruby-mock/stripe-ruby-mock/actions/workflows/rspec_tests.yml)
 
 * Homepage: https://github.com/stripe-ruby-mock/stripe-ruby-mock
