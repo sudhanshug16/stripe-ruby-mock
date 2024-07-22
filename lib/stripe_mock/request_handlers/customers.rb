@@ -56,7 +56,7 @@ module StripeMock
           add_coupon_to_object(customers[stripe_account][params[:id]], coupon)
         end
 
-        customers[stripe_account][params[:id]]
+        return_customer(customers[stripe_account][params[:id]], params)
       end
 
       def update_customer(route, method_url, params, headers)
@@ -107,7 +107,7 @@ module StripeMock
           end
         end
 
-        cus
+        return_customer(cus, params)
       end
 
       def delete_customer(route, method_url, params, headers)
@@ -126,14 +126,7 @@ module StripeMock
         route =~ method_url
         customer = assert_existence :customer, $1, customers[stripe_account][$1]
 
-        customer = customer.clone
-        if params[:expand] == ['default_source'] && customer[:sources][:data]
-          customer[:default_source] = customer[:sources][:data].detect do |source|
-            source[:id] == customer[:default_source]
-          end
-        end
-
-        customer
+        return_customer(customer, params)
       end
 
       def list_customers(route, method_url, params, headers)
@@ -159,6 +152,26 @@ module StripeMock
         cus[:discount] = nil
 
         cus
+      end
+
+      private
+
+      def return_customer(customer, params)
+        customer = customer.clone
+
+        if params[:expand].present?
+          [params[:expand]].flatten.each do |field|
+            case field
+            when 'default_source'
+              customer[:default_source] = customer[:sources][:data].detect do |source|
+                source[:id] == customer[:default_source]
+              end
+
+            end
+          end
+        end
+
+        customer
       end
     end
   end

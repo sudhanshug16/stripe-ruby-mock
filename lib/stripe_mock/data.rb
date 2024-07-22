@@ -174,7 +174,8 @@ module StripeMock
           url: "/v1/customers/#{cus_id}/subscriptions",
           data: []
         },
-        default_source: nil
+        default_source: nil,
+        balance: 0
       }.merge(params)
     end
 
@@ -411,7 +412,7 @@ module StripeMock
       lines << Data.mock_line_item() if lines.empty?
       invoice = {
         id: 'in_test_invoice',
-        status: 'open',
+        status: 'draft',
         invoice_pdf: 'pdf_url',
         hosted_invoice_url: 'hosted_invoice_url',
         created: 1349738950,
@@ -451,7 +452,8 @@ module StripeMock
         charge: nil,
         discount: nil,
         subscription: nil,
-        number: "6C41730-0001"
+        number: "6C41730-0001",
+        payment_intent: nil
       }.merge(params)
       if invoice[:discount]
         invoice[:total] = [0, invoice[:subtotal] - invoice[:discount][:coupon][:amount_off]].max if invoice[:discount][:coupon][:amount_off]
@@ -1423,8 +1425,30 @@ module StripeMock
         setup_intent: nil,
         submit_type: nil,
         subscription: nil,
+        client_secret: 'cs_test_secret',
         success_url: 'https://example.com/success'
       }.merge(params)
     end
+
+    def self.mock_quote(params = {})
+    {
+      id: params[:id] || "qt_#{SecureRandom.hex(8)}",
+      object: "quote",
+      amount_total: params[:amount_total] || 1000,
+      amount_subtotal: params[:amount_subtotal] || 900,
+      currency: params[:currency] || "usd",
+      customer: params[:customer] || "cus_#{SecureRandom.hex(8)}",
+      status: params[:status] || "open",
+      total_details: {
+        amount_discount: params.dig(:total_details, :amount_discount) || 100,
+        breakdown: {
+          discounts: params.dig(:total_details, :breakdown, :discounts) || []
+        }
+      },
+      line_items: params[:line_items] || [],
+      metadata: params[:metadata] || {},
+      discounts: params[:discounts] || []
+    }.merge(params)
+  end
   end
 end
