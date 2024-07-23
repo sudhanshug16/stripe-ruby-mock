@@ -1359,6 +1359,7 @@ module StripeMock
           phone: nil
         },
         customer: params[:customer] || nil,
+        created: 1565290521,
         metadata: {
           order_id: '123456789'
         }
