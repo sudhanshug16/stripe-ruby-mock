@@ -411,7 +411,6 @@ module StripeMock
     def self.mock_invoice(lines, params={})
       in_id = params[:id] || "test_in_default"
       currency = params[:currency] || StripeMock.default_currency
-      lines << Data.mock_line_item() if lines.empty?
       invoice = {
         id: 'in_test_invoice',
         status: 'draft',
