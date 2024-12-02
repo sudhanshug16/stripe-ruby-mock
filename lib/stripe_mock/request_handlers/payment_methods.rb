@@ -78,7 +78,7 @@ module StripeMock
 
       # post /v1/payment_methods/:id
       def update_payment_method(route, method_url, params, headers)
-        allowed_params = [:billing_details, :card, :metadata]
+        allowed_params = [:billing_details, :card, :metadata, :allow_redisplay]
         disallowed_params = params.keys - allowed_params
         unless disallowed_params.empty?
           raise Stripe::InvalidRequestError.new("Received unknown parameter: #{disallowed_params.first}", disallowed_params.first)
