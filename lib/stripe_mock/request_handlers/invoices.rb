@@ -72,9 +72,12 @@ module StripeMock
         raise Stripe::InvalidRequestError.new('Invoice is not a draft', nil, http_status: 400) unless invoices[$1][:status] == 'draft'
 
         params[:lines].each do |line|
-          line_item = Data.mock_line_item(line)
+          price = get_price(nil, nil, { price: line[:price] }, nil)
+          line_item = Data.mock_line_item(line.merge(amount: price[:unit_amount]))
           invoices[$1][:lines][:data] << line_item
         end
+
+        invoices[$1][:total] = invoices[$1][:lines][:data].sum { |item| item[:amount] }
 
         return_invoice(invoices[$1], params)
       end
