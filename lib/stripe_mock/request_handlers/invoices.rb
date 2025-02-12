@@ -78,6 +78,7 @@ module StripeMock
         end
 
         invoices[$1][:total] = invoices[$1][:lines][:data].sum { |item| item[:amount] }
+        invoices[$1][:amount_due] = invoices[$1][:total]
 
         return_invoice(invoices[$1], params)
       end
