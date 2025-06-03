@@ -1325,7 +1325,7 @@ module StripeMock
           generated_from: nil,
           last4: last4.nil? ? '3155' : last4.to_s[-4..],
           three_d_secure_usage: { supported: true },
-          wallet: nil
+          wallet: params.dig(:card, :wallet)
         },
         ideal: {
           bank: 'ing',
